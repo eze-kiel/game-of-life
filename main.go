@@ -12,7 +12,7 @@ const FieldSize = 40
 //InitCells represents the number of cells at the beginning
 const InitCells = FieldSize * 2
 
-//Speed represents the speed in ms
+//Speed represents the duration of one generation in ms
 const Speed = 750
 
 var field = [FieldSize][FieldSize]string{}
@@ -77,7 +77,6 @@ func survival() {
 		for c := 0; c < FieldSize; c++ {
 
 			neighbors := countNeighbors(r, c)
-			//fmt.Printf("neighbors : %d\n", neighbors)
 
 			if field[r][c] == "#" {
 				if neighbors == 2 || neighbors == 3 {
