@@ -9,13 +9,19 @@ import (
 //FieldSize represents the size of the board for cells development
 const FieldSize = 40
 
+//Height represents the height of the field
+const Height = 40
+
+//Lenght represents the lenght of the field
+const Lenght = 140
+
 //InitCells represents the number of cells at the beginning
-const InitCells = FieldSize * 2
+const InitCells = Height + Lenght
 
 //Speed represents the duration of one generation in ms
-const Speed = 1000
+const Speed = 100
 
-var field = [FieldSize][FieldSize]string{}
+var field = [Height][Lenght]string{}
 
 func main() {
 	counter := 0
@@ -41,8 +47,8 @@ func main() {
 }
 
 func fillField() {
-	for r := 0; r < FieldSize; r++ {
-		for c := 0; c < FieldSize; c++ {
+	for r := 0; r < Height; r++ {
+		for c := 0; c < Lenght; c++ {
 			field[r][c] = " "
 		}
 	}
@@ -56,14 +62,14 @@ func createRandomCells() {
 		randomRow := rand.New(source1)
 		randomCol := rand.New(source2)
 
-		field[randomRow.Intn(FieldSize)][randomCol.Intn(FieldSize)] = "#"
+		field[randomRow.Intn(Height)][randomCol.Intn(Lenght)] = "#"
 
 	}
 }
 
 func printField() {
-	for r := 0; r < FieldSize; r++ {
-		for c := 0; c < FieldSize; c++ {
+	for r := 0; r < Height; r++ {
+		for c := 0; c < Lenght; c++ {
 			fmt.Printf("%s", field[r][c])
 		}
 		fmt.Printf("\n")
@@ -73,8 +79,8 @@ func printField() {
 func survival() {
 	//if a cell has 2 or 3 neighbors only
 
-	for r := 0; r < FieldSize; r++ {
-		for c := 0; c < FieldSize; c++ {
+	for r := 0; r < Height; r++ {
+		for c := 0; c < Lenght; c++ {
 
 			neighbors := countNeighbors(r, c)
 
@@ -94,8 +100,8 @@ func survival() {
 func birth() {
 	//if a blank has 3 neighbors
 
-	for r := 0; r < FieldSize; r++ {
-		for c := 0; c < FieldSize; c++ {
+	for r := 0; r < Height; r++ {
+		for c := 0; c < Lenght; c++ {
 			neighbors := countNeighbors(r, c)
 			//fmt.Printf("neighbors : %d\n", neighbors)
 
@@ -112,7 +118,7 @@ func birth() {
 func countNeighbors(row int, col int) int {
 	nbNeighbors := 0
 
-	if row == 0 || col == 0 || row == FieldSize-1 || col == FieldSize-1 { //are we checking the edge of the field ?
+	if row == 0 || col == 0 || row == Height-1 || col == Lenght-1 { //are we checking the edge of the field ?
 
 		if row == 0 {
 			switch col {
@@ -127,7 +133,7 @@ func countNeighbors(row int, col int) int {
 						}
 					}
 				}
-			case FieldSize - 1:
+			case Lenght - 1:
 				for rowToTest := row; rowToTest < row+2; rowToTest++ {
 					for colToTest := col - 1; colToTest < col+1; colToTest++ {
 						if rowToTest == row && colToTest == col {
@@ -157,7 +163,7 @@ func countNeighbors(row int, col int) int {
 
 		}
 
-		if row == FieldSize-1 {
+		if row == Height-1 {
 			switch col {
 			case 0:
 				for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
@@ -172,7 +178,7 @@ func countNeighbors(row int, col int) int {
 
 					}
 				}
-			case FieldSize - 1:
+			case Lenght - 1:
 				for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
 					for colToTest := col - 1; colToTest < col+1; colToTest++ {
 						if rowToTest == row && colToTest == col {
@@ -202,7 +208,7 @@ func countNeighbors(row int, col int) int {
 		}
 
 		if col == 0 {
-			if row > 0 && row < FieldSize-1 {
+			if row > 0 && row < Height-1 {
 				for rowToTest := row - 1; rowToTest < row+2; rowToTest++ {
 					for colToTest := col; colToTest < col+2; colToTest++ {
 						if rowToTest == row && colToTest == col {
@@ -218,8 +224,8 @@ func countNeighbors(row int, col int) int {
 			}
 		}
 
-		if col == FieldSize-1 {
-			if row > 0 && row < FieldSize-1 {
+		if col == Lenght-1 {
+			if row > 0 && row < Height-1 {
 				for rowToTest := row - 1; rowToTest < row+2; rowToTest++ {
 					for colToTest := col - 1; colToTest < col+1; colToTest++ {
 						if rowToTest == row && colToTest == col {
