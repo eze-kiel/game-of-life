@@ -13,7 +13,7 @@ const FieldSize = 40
 const InitCells = FieldSize * 2
 
 //Speed represents the duration of one generation in ms
-const Speed = 750
+const Speed = 1000
 
 var field = [FieldSize][FieldSize]string{}
 
@@ -114,64 +114,126 @@ func countNeighbors(row int, col int) int {
 
 	if row == 0 || col == 0 || row == FieldSize-1 || col == FieldSize-1 { //are we checking the edge of the field ?
 
-		if row == 0 && col == 0 { //upper left corner
-			for rowToTest := row; rowToTest < row+2; rowToTest++ {
-				for colToTest := col; colToTest < col+2; colToTest++ {
-					if rowToTest == row && colToTest == col {
-					} else {
-						if field[rowToTest][colToTest] == "#" {
-							nbNeighbors++
+		if row == 0 {
+			switch col {
+			case 0:
+				for rowToTest := row; rowToTest < row+2; rowToTest++ {
+					for colToTest := col; colToTest < col+2; colToTest++ {
+						if rowToTest == row && colToTest == col {
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
 						}
+					}
+				}
+			case FieldSize - 1:
+				for rowToTest := row; rowToTest < row+2; rowToTest++ {
+					for colToTest := col - 1; colToTest < col+1; colToTest++ {
+						if rowToTest == row && colToTest == col {
+
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
+						}
+
+					}
+				}
+			default:
+				for rowToTest := row; rowToTest < row+2; rowToTest++ {
+					for colToTest := col - 1; colToTest < col+2; colToTest++ {
+						if rowToTest == row && colToTest == col {
+
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
+						}
+
+					}
+				}
+			}
+
+		}
+
+		if row == FieldSize-1 {
+			switch col {
+			case 0:
+				for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
+					for colToTest := col; colToTest < col+2; colToTest++ {
+						if rowToTest == row && colToTest == col {
+
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
+						}
+
+					}
+				}
+			case FieldSize - 1:
+				for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
+					for colToTest := col - 1; colToTest < col+1; colToTest++ {
+						if rowToTest == row && colToTest == col {
+
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
+						}
+
+					}
+				}
+			default:
+				for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
+					for colToTest := col - 1; colToTest < col+2; colToTest++ {
+						if rowToTest == row && colToTest == col {
+
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
+						}
+
 					}
 				}
 			}
 		}
 
-		if row == 0 && col == FieldSize-1 { //upper right corner
-			for rowToTest := row; rowToTest < row+2; rowToTest++ {
-				for colToTest := col - 1; colToTest < col+1; colToTest++ {
-					if rowToTest == row && colToTest == col {
+		if col == 0 {
+			if row > 0 && row < FieldSize-1 {
+				for rowToTest := row - 1; rowToTest < row+2; rowToTest++ {
+					for colToTest := col; colToTest < col+2; colToTest++ {
+						if rowToTest == row && colToTest == col {
 
-					} else {
-						if field[rowToTest][colToTest] == "#" {
-							nbNeighbors++
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
 						}
-					}
 
+					}
 				}
 			}
 		}
 
-		if row == FieldSize-1 && col == 0 { //bottom left corner
-			for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
-				for colToTest := col; colToTest < col+2; colToTest++ {
-					if rowToTest == row && colToTest == col {
+		if col == FieldSize-1 {
+			if row > 0 && row < FieldSize-1 {
+				for rowToTest := row - 1; rowToTest < row+2; rowToTest++ {
+					for colToTest := col - 1; colToTest < col+1; colToTest++ {
+						if rowToTest == row && colToTest == col {
 
-					} else {
-						if field[rowToTest][colToTest] == "#" {
-							nbNeighbors++
+						} else {
+							if field[rowToTest][colToTest] == "#" {
+								nbNeighbors++
+							}
 						}
-					}
 
+					}
 				}
 			}
 		}
-
-		if row == FieldSize-1 && col == FieldSize-1 { //bottom right corner
-			for rowToTest := row - 1; rowToTest < row+1; rowToTest++ {
-				for colToTest := col - 1; colToTest < col+1; colToTest++ {
-					if rowToTest == row && colToTest == col {
-
-					} else {
-						if field[rowToTest][colToTest] == "#" {
-							nbNeighbors++
-						}
-					}
-
-				}
-			}
-		}
-
 	} else {
 		for rowToTest := row - 1; rowToTest < row+2; rowToTest++ {
 			for colToTest := col - 1; colToTest < col+2; colToTest++ {
