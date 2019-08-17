@@ -13,13 +13,13 @@ const FieldSize = 40
 const Height = 40
 
 //Lenght represents the lenght of the field
-const Lenght = 40
+const Lenght = 150
 
 //InitCells represents the number of cells at the beginning
-const InitCells = Height + Lenght
+const InitCells = (Height + Lenght) * 3
 
 //Speed represents the number of generations that evolve in 1 sec
-const Speed = 1
+const Speed = 2
 
 var field_ori = [Height][Lenght]string{}
 
@@ -30,8 +30,8 @@ func main() {
 	print("\033[H\033[2J")
 	fmt.Printf("generation : %d\n", counter)
 	fillField()
-	//createRandomCells()
-	createOscillator()
+	createRandomCells()
+	//createOscillator()
 	printField()
 
 	//life loop
