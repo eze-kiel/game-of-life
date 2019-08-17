@@ -13,35 +13,40 @@ const FieldSize = 40
 const Height = 40
 
 //Lenght represents the lenght of the field
-const Lenght = 140
+const Lenght = 40
 
 //InitCells represents the number of cells at the beginning
 const InitCells = Height + Lenght
 
-//Speed represents the duration of one generation in ms
-const Speed = 100
+//Speed represents the number of generations that evolve in 1 sec
+const Speed = 1
 
-var field = [Height][Lenght]string{}
+var field_ori = [Height][Lenght]string{}
+
+var field_tmp = [Height][Lenght]string{}
 
 func main() {
 	counter := 0
 	print("\033[H\033[2J")
-	fmt.Printf("gen : %d\n", counter)
+	fmt.Printf("generation : %d\n", counter)
 	fillField()
-	createRandomCells()
+	//createRandomCells()
+	createOscillator()
 	printField()
 
 	//life loop
 	for {
-		time.Sleep(Speed * time.Millisecond)
+		time.Sleep(1000 / Speed * time.Millisecond)
 		counter = counter + 1
 
 		//clear the terminal
 		print("\033[H\033[2J")
 
 		fmt.Printf("generation : %d\n", counter)
+		copyOriToTmp()
 		birth()
 		survival()
+		copyTmpToOri()
 		printField()
 	}
 }
@@ -49,7 +54,7 @@ func main() {
 func fillField() {
 	for r := 0; r < Height; r++ {
 		for c := 0; c < Lenght; c++ {
-			field[r][c] = " "
+			field_ori[r][c] = " "
 		}
 	}
 }
@@ -62,7 +67,7 @@ func createRandomCells() {
 		randomRow := rand.New(source1)
 		randomCol := rand.New(source2)
 
-		field[randomRow.Intn(Height)][randomCol.Intn(Lenght)] = "#"
+		field_ori[randomRow.Intn(Height)][randomCol.Intn(Lenght)] = "#"
 
 	}
 }
@@ -70,7 +75,7 @@ func createRandomCells() {
 func printField() {
 	for r := 0; r < Height; r++ {
 		for c := 0; c < Lenght; c++ {
-			fmt.Printf("%s", field[r][c])
+			fmt.Printf("%s", field_ori[r][c])
 		}
 		fmt.Printf("\n")
 	}
@@ -84,11 +89,11 @@ func survival() {
 
 			neighbors := countNeighbors(r, c)
 
-			if field[r][c] == "#" {
+			if field_ori[r][c] == "#" {
 				if neighbors == 2 || neighbors == 3 {
 					//the cell survives : nothing changes
 				} else {
-					field[r][c] = " " //the cells dies
+					field_tmp[r][c] = " " //the cells dies
 				}
 			}
 
@@ -105,9 +110,9 @@ func birth() {
 			neighbors := countNeighbors(r, c)
 			//fmt.Printf("neighbors : %d\n", neighbors)
 
-			if field[r][c] == " " {
+			if field_ori[r][c] == " " {
 				if neighbors == 3 {
-					field[r][c] = "#" //a cell is born
+					field_tmp[r][c] = "#" //a cell is born
 				}
 			}
 		}
@@ -127,7 +132,7 @@ func countNeighbors(row int, col int) int {
 					for colToTest := col; colToTest < col+2; colToTest++ {
 						if rowToTest == row && colToTest == col {
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -139,7 +144,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -152,7 +157,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -171,7 +176,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -184,7 +189,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -197,7 +202,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -214,7 +219,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -231,7 +236,7 @@ func countNeighbors(row int, col int) int {
 						if rowToTest == row && colToTest == col {
 
 						} else {
-							if field[rowToTest][colToTest] == "#" {
+							if field_ori[rowToTest][colToTest] == "#" {
 								nbNeighbors++
 							}
 						}
@@ -246,7 +251,7 @@ func countNeighbors(row int, col int) int {
 				if rowToTest == row && colToTest == col {
 
 				} else {
-					if field[rowToTest][colToTest] == "#" {
+					if field_ori[rowToTest][colToTest] == "#" {
 						nbNeighbors++
 					}
 				}
@@ -256,4 +261,31 @@ func countNeighbors(row int, col int) int {
 
 	}
 	return nbNeighbors
+}
+
+func createOscillator() {
+	for col := 5; col < 8; col++ {
+		field_ori[10][col] = "#"
+	}
+	for col := 4; col < 7; col++ {
+		field_ori[11][col] = "#"
+	}
+}
+
+func copyOriToTmp() {
+	for row := 0; row < Height; row++ {
+		for col := 0; col < Lenght; col++ {
+			field_tmp[row][col] = field_ori[row][col]
+		}
+
+	}
+}
+
+func copyTmpToOri() {
+	for row := 0; row < Height; row++ {
+		for col := 0; col < Lenght; col++ {
+			field_ori[row][col] = field_tmp[row][col]
+		}
+
+	}
 }
